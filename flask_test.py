@@ -18,7 +18,7 @@ from flask import Flask
 #from flask_cors import CORS, cross_origin
 from flask import render_template
 
-app=Flask(__name__)
+app=Flask(__name__,template_folder='templates')
 
 #cors = CORS(app, resources={r"/foo": {"origins": "http://localhost:5000"}})
 #app.config['CORS_HEADERS'] = 'Content-Type'
