@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>OCR Container Prediction</title>
+	<style>
+		*{font-size: 30px;
+		}
+	</style>
+	 <link rel="shortcut icon" href="#" />
+	 <style>
+.button {
+  display: inline-block;
+  padding: 15px 25px;
+  font-size: 24px;
+  cursor: pointer;
+  text-align: center;
+  text-decoration: none;
+  outline: none;
+  color: #fff;
+  background-color: #4CAF50;
+  border: none;
+  border-radius: 15px;
+  box-shadow: 0 9px #999;
+}
+
+.button:hover {background-color: #3e8e41}
+
+.button:active {
+  background-color: #3e8e41;
+  box-shadow: 0 5px #666;
+  transform: translateY(4px);
+}
+</style>
+	</head>
+	<body>
+		<label for="fname">Image url:</label>
+            <input type="text" id="fname" name="fname">
+            <button id="pred-button" class="button">Predict url</button>
+            <br> 
+		
+			<input  id="image-selector" type="file"/>
+			<button id="predict-button" class="button">Predict local</button>
+			<input type="button" class="button" style="margin:30px;" value = "Refresh" onclick="history.go(0)" />
+			
+			
+		
+
+
+		
+         
+
+        
+         
+		
+		
+		
+
+		<p style="font-weight: bold">Predictions</p>
+		<p>Key: <span id="key-predict"></span></p>
+
+		<img id="selected-image" src=""/>
+
+		
+		
+		<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+		<script type="text/javascript">
+			function toDataURL(src,callback)
+			{
+				var image=new Image();
+				image.crossOrigin='Anonymous';
+
+				image.onload=function(){
+					var canvas=document.createElement('canvas');
+					var context=canvas.getContext('2d');
+					canvas.height=this.naturalHeight;
+					canvas.width=this.naturalWidth;
+					context.drawImage(this,0,0);
+					var dataURL=canvas.toDataURL('image/jpeg');
+					callback(dataURL)
+				};
+				image.src=src;
+			}
+		
+
+		
+			let base64Image;
+
+			$("#image-selector").change(function(){
+				let reader=new FileReader();
+				reader.onload=function(e){
+					let dataURL=reader.result;
+					if(!(String(dataURL).slice(0, 11) === 'data:image/')) 
+						{
+							alert("Invalid File type!Kindly take .jpg input !");
+						}
+						else
+						{					
+						
+					$('#selected-image').attr("src",dataURL);
+					
+
+
+					base64Image=dataURL.replace("data:image/jpeg;base64,","");
+					console.log(base64Image);
+				}
+				}
+				reader.readAsDataURL($("#image-selector")[0].files[0]);
+
+
+			
+				//$("#key-predict").text("");
+			});
+
+
+
+
+
+
+			$("#predict-button").click(function(event){
+				 var x=$("#fname").val();
+                 var imgVal = $('#image-selector').val(); 
+                 if(imgVal=='' && x=='') 
+                 { 
+                   alert("empty input file"); 
+
+                 } 
+       
+				else if(imgVal!='')
+				{
+
+
+				let message={
+					image:base64Image
+				}
+				console.log(message);
+				$.post("http://localhost:5000/hello",JSON.stringify(message),function(response){
+					$("#key-predict").text(response.prediction);
+					console.log(response);
+				
+				});
+			}
+			else
+				alert("Incorrect predict button pressed");
+			});
+
+
+			$("#pred-button").click(function(event){
+				var img=$("#fname").val();
+				var img1=$('#image-selector').val(); 
+			if(img1=='' && img=='') 
+                 { 
+                   alert("empty input file"); 
+
+                 } 
+			else if(img!='')
+			{
+				
+				$('#selected-image').attr("src",img);
+				
+				if(!(String(img).slice(-3) === 'jpg')) 
+						{
+							alert("Kindly take .jpg input !");
+						}
+						else
+						{
+
+				toDataURL(img,function(dataURL){
+
+					
+					
+				base64Image=dataURL.replace("data:image/jpeg;base64,","");
+					console.log(base64Image);
+
+					let message={
+					image:base64Image
+				}
+				console.log(message);
+				$.post("http://localhost:5000/hello",JSON.stringify(message),function(response){
+					$("#key-predict").text(response.prediction);
+					console.log(response);
+
+
+
+				});
+						
+			});
+			}
+		}
+		else
+		{
+		alert("Incorrect predict button pressed");
+	}
+
+
+			});
+
+		</script>  
+	</body>
+</html>
