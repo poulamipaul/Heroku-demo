@@ -133,7 +133,7 @@
 					image:base64Image
 				}
 				console.log(message);
-				$.post("http://localhost:5000/hello",JSON.stringify(message),function(response){
+				$.post("https://container-ocr.herokuapp.com",JSON.stringify(message),function(response){
 					$("#key-predict").text(response.prediction);
 					console.log(response);
 				
