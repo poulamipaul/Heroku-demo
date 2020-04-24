@@ -70,13 +70,14 @@ def hello():
 
     ans=pred[0]+pred[1]+pred[2]+pred[3]
     
-    print(ans)
+    #print(ans)
     
                     
 
-    response={'prediction':ans}
+    #response={'prediction':ans}
     
-    return jsonify(response)
+    #return jsonify(response)
+    return render_template('hello.html', prediction_text=ans)
 
 if __name__=="__main__":
     port = int(os.environ.get("PORT", 5000))
