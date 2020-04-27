@@ -46,10 +46,10 @@ def hello():
     #img=convertToJpeg(image)
     buf = io.BytesIO()
     image.save(buf, format='JPEG')
-    img = buf.getvalue()
+    im = buf.getvalue()
     #img=image.save("ocr.jpg"); 
     #print(img)
-    #img=keras_ocr.tools.read("C:\\Users\\User\\AppData\\Local\\Programs\\Python\\Python36\\ocr.jpg")
+    img=keras_ocr.tools.read(im)
     pipeline = keras_ocr.pipeline.Pipeline()
     predictions = pipeline.recognize(images=[img])[0]
     #drawn = keras_ocr.tools.drawBoxes(image=img, boxes=predictions, boxes_format='predictions')
