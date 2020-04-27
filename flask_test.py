@@ -24,10 +24,16 @@ app=Flask(__name__,template_folder='templates')
 #app.config['CORS_HEADERS'] = 'Content-Type'
 
 #@cross_origin(origin='localhost',headers=['Content- Type','Authorization'])
+#def convertToJpeg(im):
+#    with BytesIO() as f:
+#        im.save(f, format='JPEG')
+#        return f.getvalue()
+
 
 @app.route("/")
 def startWeb():
     return render_template('hello.html')
+
 
 @app.route("/hello",methods=["GET","POST"])
 def hello():
@@ -36,11 +42,14 @@ def hello():
     encoded=message['image']
     decoded=base64.b64decode(encoded)
     
-    image=Image.open(io.BytesIO(decoded))
-   
-    img=image.save("ocr.jpg"); 
-    print(img)
-    img=keras_ocr.tools.read("C:\\Users\\User\\AppData\\Local\\Programs\\Python\\Python36\\ocr.jpg")
+    image=Image.open(io.BytesIO(decoded)) 
+    #img=convertToJpeg(image)
+    buf = io.BytesIO()
+    image.save(buf, format='JPEG')
+    img = buf.getvalue()
+    #img=image.save("ocr.jpg"); 
+    #print(img)
+    #img=keras_ocr.tools.read("C:\\Users\\User\\AppData\\Local\\Programs\\Python\\Python36\\ocr.jpg")
     pipeline = keras_ocr.pipeline.Pipeline()
     predictions = pipeline.recognize(images=[img])[0]
     #drawn = keras_ocr.tools.drawBoxes(image=img, boxes=predictions, boxes_format='predictions')
