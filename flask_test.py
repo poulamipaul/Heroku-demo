@@ -49,7 +49,7 @@ def hello():
     im = buf.getvalue()
     #img=image.save("ocr.jpg"); 
     #print(img)
-    img=keras_ocr.tools.read(im)
+    img=keras_ocr.tools.read("https://mccontainers.com/wp-content/uploads/2018/03/20160908141837-e1526588815594.jpg")
     pipeline = keras_ocr.pipeline.Pipeline()
     predictions = pipeline.recognize(images=[img])[0]
     #drawn = keras_ocr.tools.drawBoxes(image=img, boxes=predictions, boxes_format='predictions')
