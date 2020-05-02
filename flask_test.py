@@ -44,12 +44,13 @@ def hello():
     
     image=Image.open(io.BytesIO(decoded)) 
     #img=convertToJpeg(image)
-    buf = io.BytesIO()
-    image.save(buf, format='JPEG')
-    im = buf.getvalue()
+    #buf = io.BytesIO()
+    #image.save(buf, format='JPEG')
+    #im = buf.getvalue()
     #img=image.save("ocr.jpg"); 
     #print(img)
-    img=keras_ocr.tools.read(image)
+    im=np.array(image)
+    img=keras_ocr.tools.read(im)
     pipeline = keras_ocr.pipeline.Pipeline()
     predictions = pipeline.recognize(images=[img])[0]
     #drawn = keras_ocr.tools.drawBoxes(image=img, boxes=predictions, boxes_format='predictions')
