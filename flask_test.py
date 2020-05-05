@@ -15,25 +15,23 @@ from keras.preprocessing.image import img_to_array
 from flask import request
 from flask import jsonify
 from flask import Flask
-#from flask_cors import CORS, cross_origin
+from flask_cors import CORS, cross_origin
 from flask import render_template
+from flask_ngrok import run_with_ngrok
 
-app=Flask(__name__,template_folder='templates')
+app=Flask(__name__)
+CORS(app)
 
-#cors = CORS(app, resources={r"/foo": {"origins": "http://localhost:5000"}})
+run_with_ngrok(app)
+
+
+
 #app.config['CORS_HEADERS'] = 'Content-Type'
-
-#@cross_origin(origin='localhost',headers=['Content- Type','Authorization'])
-#def convertToJpeg(im):
-#    with BytesIO() as f:
-#        im.save(f, format='JPEG')
-#        return f.getvalue()
 
 
 @app.route("/")
 def startWeb():
     return render_template('hello.html')
-
 
 @app.route("/hello",methods=["GET","POST"])
 def hello():
@@ -42,13 +40,11 @@ def hello():
     encoded=message['image']
     decoded=base64.b64decode(encoded)
     
-    image=Image.open(io.BytesIO(decoded)) 
-    #img=convertToJpeg(image)
-    #buf = io.BytesIO()
-    #image.save(buf, format='JPEG')
-    #im = buf.getvalue()
+    image=Image.open(io.BytesIO(decoded))
+   
     #img=image.save("ocr.jpg"); 
     #print(img)
+    #img=keras_ocr.tools.read("C:\\Users\\User\\AppData\\Local\\Programs\\Python\\Python36\\ocr.jpg")
     im=np.array(image)
     img=keras_ocr.tools.read(im)
     pipeline = keras_ocr.pipeline.Pipeline()
@@ -80,17 +76,18 @@ def hello():
 
     ans=pred[0]+pred[1]+pred[2]+pred[3]
     
-    #print(ans)
+    
     
                     
 
     response={'prediction':ans}
     
     return jsonify(response)
-    #return render_template('hello.html', prediction_text=ans)
 
 if __name__=="__main__":
-    port = int(os.environ.get("PORT", 5000))
-    app.run(host='0.0.0.0', port=port)
+    app.run()
+    #app.run(debug=True)
+    #port = int(os.environ.get("PORT", 5000))
+    #app.run(host='0.0.0.0', port=port)
 
     
