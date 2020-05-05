@@ -17,7 +17,7 @@ from flask import jsonify
 from flask import Flask
 from flask_cors import CORS, cross_origin
 from flask import render_template
-from flask_ngrok import run_with_ngrok
+#from flask_ngrok import run_with_ngrok
 
 app=Flask(__name__)
 CORS(app)
