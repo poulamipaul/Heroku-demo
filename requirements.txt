@@ -10,7 +10,7 @@ editdistance==0.5.3
 efficientnet==1.0.0
 essential-generators==0.9.2
 Flask==1.1.2
-Flask-Cors==3.0.8
+Flask-Cors==3.0.9
 Flask-WTF==0.14.3
 fonttools==4.7.0
 gast==0.2.2
